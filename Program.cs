@@ -57,10 +57,6 @@ namespace discord
 
         private async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState stateAfter, SocketVoiceState stateBefore)
         {
-            // SocketVoiceState state = stateAfter;
-            // if(state.VoiceChannel == null){
-            //     state = stateBefore;
-            // }
             List<SocketVoiceState> states = new List<SocketVoiceState>();
             if (stateAfter.VoiceChannel != null)
             {
@@ -73,23 +69,16 @@ namespace discord
             foreach (var state in states)
             {
                 int channelCount = state.VoiceChannel.Guild.VoiceChannels.Count;
-                // var generalChannel = state.VoiceChannel.Guild.TextChannels.Where(x => x.Id == 563397204396736515).First();
                 if(state.VoiceChannel.Users.Count == 0)
                 {
                     if(channelCount > 3)
                     {
                         if (state.VoiceChannel.Name != "AFK" && state.VoiceChannel.Name != "Lobby")
                         {
-                            // await generalChannel.SendMessageAsync(state.VoiceChannel.Name + " deleted");
                             await state.VoiceChannel.DeleteAsync();
                         }
                     }
                 } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != 778589019733884948 && state.VoiceChannel.Id != 554602615204216833) {
-                    VoiceChannelProperties properties = new VoiceChannelProperties();
-                    properties.UserLimit = 2;
-                    properties.CategoryId = 554605557823307811;
-                    // Action<VoiceChannelProperties> propertiesAction = new Action<VoiceChannelProperties>();
-                    // string channelName = ChannelName.GetChannelName(channelCount);
                     int channelNumber = channelCount - 1;
                     string channelName = "";
                     var channelNames = JsonConvert.DeserializeObject<List<string>>(
@@ -121,7 +110,6 @@ namespace discord
                         x.CategoryId = 554605557823307811;
                         x.Position = 1;
                     }, null);
-                    // await generalChannel.SendMessageAsync(channelName + " added");
                 }
             }
         }
