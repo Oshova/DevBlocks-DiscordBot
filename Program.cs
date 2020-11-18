@@ -58,64 +58,72 @@ namespace discord
 
         private async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState stateAfter, SocketVoiceState stateBefore)
         {
-            SocketVoiceState state = stateAfter;
-            if(state.VoiceChannel == null){
-                state = stateBefore;
-            }
-            int channelCount = state.VoiceChannel.Guild.VoiceChannels.Count;
-            // var generalChannel = state.VoiceChannel.Guild.TextChannels.Where(x => x.Id == 563397204396736515).First();
-
-            if(state.VoiceChannel.Users.Count == 0)
+            // SocketVoiceState state = stateAfter;
+            // if(state.VoiceChannel == null){
+            //     state = stateBefore;
+            // }
+            List<SocketVoiceState> states = new List<SocketVoiceState>();
+            if (stateAfter.VoiceChannel != null)
             {
-                if(channelCount > 3)
+                states.Add(stateAfter);
+            }
+            if (stateBefore.VoiceChannel != null)
+            {
+                states.Add(stateBefore);
+            }
+            foreach (var state in states)
+            {
+                int channelCount = state.VoiceChannel.Guild.VoiceChannels.Count;
+                // var generalChannel = state.VoiceChannel.Guild.TextChannels.Where(x => x.Id == 563397204396736515).First();
+                if(state.VoiceChannel.Users.Count == 0)
                 {
-                    if (state.VoiceChannel.Name != "AFK" && state.VoiceChannel.Name != "Lobby")
+                    if(channelCount > 3)
                     {
-                        // await generalChannel.SendMessageAsync(state.VoiceChannel.Name + " deleted");
-                        await state.VoiceChannel.DeleteAsync();
+                        if (state.VoiceChannel.Name != "AFK" && state.VoiceChannel.Name != "Lobby")
+                        {
+                            // await generalChannel.SendMessageAsync(state.VoiceChannel.Name + " deleted");
+                            await state.VoiceChannel.DeleteAsync();
+                        }
                     }
-                }
-            } else {
-                VoiceChannelProperties properties = new VoiceChannelProperties();
-                properties.UserLimit = 2;
-                properties.CategoryId = 563397204396736516;
-                // Action<VoiceChannelProperties> propertiesAction = new Action<VoiceChannelProperties>();
-                // string channelName = ChannelName.GetChannelName(channelCount);
-                int channelNumber = channelCount - 1;
-                string channelName = "";
-                var channelNames = JsonConvert.DeserializeObject<List<string>>(
-                    "[\"Having Kids\",\"Running with Scissors\",\"Crossing the Streams\",\"Getting Married\",\"Fighting Chuck Norris\",\"Knife at a Gun Fight\"]"
-                );
-                
-                int i = 0;
-                while (channelName == "")
-                {
-                    if (channelCount >= channelNames.Count + 2)
+                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != 778589019733884948 && state.VoiceChannel.Id != 554602615204216833) {
+                    VoiceChannelProperties properties = new VoiceChannelProperties();
+                    properties.UserLimit = 2;
+                    properties.CategoryId = 554605557823307811;
+                    // Action<VoiceChannelProperties> propertiesAction = new Action<VoiceChannelProperties>();
+                    // string channelName = ChannelName.GetChannelName(channelCount);
+                    int channelNumber = channelCount - 1;
+                    string channelName = "";
+                    var channelNames = JsonConvert.DeserializeObject<List<string>>(
+                        "[\"Having Kids\",\"Running with Scissors\",\"Crossing the Streams\",\"Getting Married\",\"Fighting Chuck Norris\",\"Knife at a Gun Fight\"]"
+                    );
+                    
+                    int i = 0;
+                    while (channelName == "")
+                    {
+                        if (channelCount >= channelNames.Count + 2)
+                        {
+                            channelName = "Room " + (channelCount - 1);
+                        }
+                        Random random = new Random();
+                        int number = random.Next(0, channelNames.Count);
+                        string name = channelNames[number];
+                        if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
+                        {
+                            channelName = name;
+                        }
+                        i++;
+                    }
+                    if (channelName == "")
                     {
                         channelName = "Room " + (channelCount - 1);
                     }
-                    Random random = new Random();
-                    int number = random.Next(0, channelNames.Count);
-                    string name = channelNames[number];
-                    if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
+                    var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
                     {
-                        channelName = name;
-                    }
-                    Console.WriteLine(i);
-                    Console.WriteLine(channelCount);
-                    Console.WriteLine(channelNames.Count);
-                    i++;
+                        x.CategoryId = 554605557823307811;
+                        x.Position = 1;
+                    }, null);
+                    // await generalChannel.SendMessageAsync(channelName + " added");
                 }
-                if (channelName == "")
-                {
-                    channelName = "Room " + (channelCount - 1);
-                }
-                var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
-                {
-                    x.CategoryId = 563397204396736516;
-                    x.Position = 1;
-                }, null);
-                // await generalChannel.SendMessageAsync(channelName + " added");
             }
         }
     }
