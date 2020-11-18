@@ -68,7 +68,7 @@ namespace discord
                 int channelCount = state.VoiceChannel.Guild.VoiceChannels.Count;
                 if(state.VoiceChannel.Users.Count == 0)
                 {
-                    if(channelCount > 3)
+                    if(channelCount > config.KeepCount)
                     {
                         if (!config.KeepIds.Any(x => x == state.VoiceChannel.Id))
                         {
@@ -78,18 +78,18 @@ namespace discord
                 } else if (state.VoiceChannel.Users.Count == 1 && !config.KeepIds.Any(x => x == state.VoiceChannel.Id)) {
                     int channelNumber = channelCount - 1;
                     string channelName = "";
-                    var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
+                    // var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
                     
                     int i = 0;
                     while (channelName == "")
                     {
-                        if (channelCount >= channelNames.Count + 2)
+                        if (channelCount >= config.ChannelNames.Count + 2)
                         {
                             channelName = "Room " + (channelCount - 1);
                         }
                         Random random = new Random();
-                        int number = random.Next(0, channelNames.Count);
-                        string name = channelNames[number];
+                        int number = random.Next(0, config.ChannelNames.Count);
+                        string name = config.ChannelNames[number];
                         if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
                         {
                             channelName = name;
