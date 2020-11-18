@@ -22,6 +22,10 @@ namespace discord
 
         private DiscordSocketClient _client;
 
+        public static ulong lobbyId = 554602615204216833;
+        public static ulong afkId = 554602484891516942;
+        public static ulong categoryId = 554605557823307811;
+
         public async Task MainAsync()
         {
             _client = new DiscordSocketClient();
@@ -73,12 +77,12 @@ namespace discord
                 {
                     if(channelCount > 3)
                     {
-                        if (state.VoiceChannel.Name != "AFK" && state.VoiceChannel.Name != "Lobby")
+                        if (state.VoiceChannel.Id != afkId && state.VoiceChannel.Id != lobbyId)
                         {
                             await state.VoiceChannel.DeleteAsync();
                         }
                     }
-                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != 554602484891516942 && state.VoiceChannel.Id != 554602615204216833) {
+                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != afkId && state.VoiceChannel.Id != lobbyId) {
                     int channelNumber = channelCount - 1;
                     string channelName = "";
                     var channelNames = JsonConvert.DeserializeObject<List<string>>(
@@ -107,7 +111,7 @@ namespace discord
                     }
                     var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
                     {
-                        x.CategoryId = 554605557823307811;
+                        x.CategoryId = categoryId;
                         x.Position = 1;
                     }, null);
                 }
