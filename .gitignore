@@ -12,3 +12,8 @@ config.json
 
 # Ignore SASS config files
 .sass-cache
+
+# Ignore the Debug folder
+obj/Debug
+bin/Debug
+/Debug
