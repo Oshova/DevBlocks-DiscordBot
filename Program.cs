@@ -22,9 +22,10 @@ namespace discord
 
         private DiscordSocketClient _client;
 
-        public static ulong lobbyId = 554602615204216833;
-        public static ulong afkId = 554602484891516942;
-        public static ulong categoryId = 554605557823307811;
+        public static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+        // public static ulong lobbyId = 554602615204216833;
+        // public static ulong afkId = 554602484891516942;
+        // public static ulong categoryId = 554605557823307811;
 
         public async Task MainAsync()
         {
@@ -37,10 +38,10 @@ namespace discord
 
             // Some alternative options would be to keep your token in an Environment Variable or a standalone file.
             // var token = Environment.GetEnvironmentVariable("NameOfYourEnvironmentVariable");
-            var token = File.ReadAllText("token.txt");
+            // var token = File.ReadAllText("token.txt");
             // var token = JsonConvert.DeserializeObject<AConfigurationClass>(File.ReadAllText("config.json")).Token;
 
-            await _client.LoginAsync(TokenType.Bot, token);
+            await _client.LoginAsync(TokenType.Bot, config.Token);
             await _client.StartAsync();
 
 	        // _client.MessageReceived += MessageReceived;
@@ -77,12 +78,12 @@ namespace discord
                 {
                     if(channelCount > 3)
                     {
-                        if (state.VoiceChannel.Id != afkId && state.VoiceChannel.Id != lobbyId)
+                        if (state.VoiceChannel.Id != config.AfkId && state.VoiceChannel.Id != config.LobbyID)
                         {
                             await state.VoiceChannel.DeleteAsync();
                         }
                     }
-                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != afkId && state.VoiceChannel.Id != lobbyId) {
+                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != config.AfkId && state.VoiceChannel.Id != config.LobbyID) {
                     int channelNumber = channelCount - 1;
                     string channelName = "";
                     var channelNames = JsonConvert.DeserializeObject<List<string>>(
@@ -111,7 +112,7 @@ namespace discord
                     }
                     var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
                     {
-                        x.CategoryId = categoryId;
+                        x.CategoryId = config.CategoryId;
                         x.Position = 1;
                     }, null);
                 }

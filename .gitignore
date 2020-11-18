@@ -7,6 +7,9 @@ node_modules
 # Ignore all text files
 *.txt
 
+# Ignore config json
+config.json
+
 # Ignore files related to API keys
 .env
 
