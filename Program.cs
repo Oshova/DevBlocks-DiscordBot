@@ -78,7 +78,7 @@ namespace discord
                             await state.VoiceChannel.DeleteAsync();
                         }
                     }
-                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != 778589019733884948 && state.VoiceChannel.Id != 554602615204216833) {
+                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != 554602484891516942 && state.VoiceChannel.Id != 554602615204216833) {
                     int channelNumber = channelCount - 1;
                     string channelName = "";
                     var channelNames = JsonConvert.DeserializeObject<List<string>>(
