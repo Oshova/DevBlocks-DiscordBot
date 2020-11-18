@@ -70,12 +70,12 @@ namespace discord
                 {
                     if(channelCount > 3)
                     {
-                        if (state.VoiceChannel.Id != config.AfkId && state.VoiceChannel.Id != config.LobbyID)
+                        if (!config.KeepIds.Any(x => x == state.VoiceChannel.Id))
                         {
                             await state.VoiceChannel.DeleteAsync();
                         }
                     }
-                } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != config.AfkId && state.VoiceChannel.Id != config.LobbyID) {
+                } else if (state.VoiceChannel.Users.Count == 1 && !config.KeepIds.Any(x => x == state.VoiceChannel.Id)) {
                     int channelNumber = channelCount - 1;
                     string channelName = "";
                     var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
