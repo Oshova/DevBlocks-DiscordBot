@@ -22,24 +22,16 @@ namespace discord
 
         private DiscordSocketClient _client;
 
+        // You will need to create a config.json file that complies to the Config class
+        // The only required paramters are the token and the categoryId
+        // Without these the bot won't be able to connect, and/or won't know where to add voice channels
         public static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
-        // public static ulong lobbyId = 554602615204216833;
-        // public static ulong afkId = 554602484891516942;
-        // public static ulong categoryId = 554605557823307811;
 
         public async Task MainAsync()
         {
             _client = new DiscordSocketClient();
 
             _client.Log += Log;
-
-            //  You can assign your bot token to a string, and pass that in to connect.
-            //  This is, however, insecure, particularly if you plan to have your code hosted in a public repository.
-
-            // Some alternative options would be to keep your token in an Environment Variable or a standalone file.
-            // var token = Environment.GetEnvironmentVariable("NameOfYourEnvironmentVariable");
-            // var token = File.ReadAllText("token.txt");
-            // var token = JsonConvert.DeserializeObject<AConfigurationClass>(File.ReadAllText("config.json")).Token;
 
             await _client.LoginAsync(TokenType.Bot, config.Token);
             await _client.StartAsync();
@@ -86,9 +78,7 @@ namespace discord
                 } else if (state.VoiceChannel.Users.Count == 1 && state.VoiceChannel.Id != config.AfkId && state.VoiceChannel.Id != config.LobbyID) {
                     int channelNumber = channelCount - 1;
                     string channelName = "";
-                    var channelNames = JsonConvert.DeserializeObject<List<string>>(
-                        "[\"Having Kids\",\"Running with Scissors\",\"Crossing the Streams\",\"Getting Married\",\"Fighting Chuck Norris\",\"Knife at a Gun Fight\"]"
-                    );
+                    var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
                     
                     int i = 0;
                     while (channelName == "")

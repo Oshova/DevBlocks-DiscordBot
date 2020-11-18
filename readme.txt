@@ -1,0 +1,2 @@
+A bot for creating/deleting voice channels. It will track users joining/leaving voice channels and add/remove voice channels to stay at 3.
+You can have up to 2 channels locked in, and these won't get removed and new channels won't get created when someone joins them.
