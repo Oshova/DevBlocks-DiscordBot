@@ -63,48 +63,63 @@ namespace discord
             {
                 states.Add(stateBefore);
             }
-            foreach (var state in states)
+            if (states.Count == 2 && states.Any(x => x.VoiceChannel.Users.Count == 2))
             {
-                int channelCount = state.VoiceChannel.Guild.VoiceChannels.Count;
-                if(state.VoiceChannel.Users.Count == 0)
+
+            } 
+            else if (states.Count == 2 && (states[0].VoiceChannel.Users.Count == 2 || states[1].VoiceChannel.Users.Count == 2))
+            {
+
+            } else {
+                foreach (var state in states)
                 {
-                    if(channelCount > config.KeepCount)
+                    Console.WriteLine();
+                    Console.WriteLine(user.Username + " - " + DateTime.Now);
+                    Console.WriteLine("Channel: " + state.VoiceChannel.Name);
+                    Console.WriteLine("Users: " + state.VoiceChannel.Users.Count);
+                    int channelCount = state.VoiceChannel.Guild.VoiceChannels.Count;
+                    if(state.VoiceChannel.Users.Count == 0)
                     {
-                        if (!config.KeepIds.Any(x => x == state.VoiceChannel.Id))
+                        if(channelCount > config.KeepCount)
                         {
-                            await state.VoiceChannel.DeleteAsync();
+                            if (!config.KeepIds.Any(x => x == state.VoiceChannel.Id))
+                            {
+                                await state.VoiceChannel.DeleteAsync();
+                                Console.WriteLine(state.VoiceChannel.Name + " deleted");
+                            }
                         }
-                    }
-                } else if (state.VoiceChannel.Users.Count == 1 && !config.KeepIds.Any(x => x == state.VoiceChannel.Id)) {
-                    int channelNumber = channelCount - 1;
-                    string channelName = "";
-                    // var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
-                    
-                    int i = 0;
-                    while (channelName == "")
-                    {
-                        if (channelCount >= config.ChannelNames.Count + 2)
+                    } else if (state.VoiceChannel.Users.Count == 1 && !config.KeepIds.Any(x => x == state.VoiceChannel.Id)) {
+                        int channelNumber = channelCount - 1;
+                        string channelName = "";
+                        // var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
+                        
+                        int i = 0;
+                        while (channelName == "")
+                        {
+                            if (channelCount >= config.ChannelNames.Count + 2)
+                            {
+                                channelName = "Room " + (channelCount - 1);
+                            }
+                            Random random = new Random();
+                            int number = random.Next(0, config.ChannelNames.Count);
+                            string name = config.ChannelNames[number];
+                            if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
+                            {
+                                channelName = name;
+                            }
+                            i++;
+                        }
+                        if (channelName == "")
                         {
                             channelName = "Room " + (channelCount - 1);
                         }
-                        Random random = new Random();
-                        int number = random.Next(0, config.ChannelNames.Count);
-                        string name = config.ChannelNames[number];
-                        if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
+                        var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
                         {
-                            channelName = name;
-                        }
-                        i++;
+                            x.CategoryId = config.CategoryId;
+                            x.Position = 1;
+                        }, null);
+                        Console.WriteLine(channelName + " created");
                     }
-                    if (channelName == "")
-                    {
-                        channelName = "Room " + (channelCount - 1);
-                    }
-                    var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
-                    {
-                        x.CategoryId = config.CategoryId;
-                        x.Position = 1;
-                    }, null);
                 }
             }
         }

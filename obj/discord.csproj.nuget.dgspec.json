@@ -1,30 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TimBrownCCSITSolutio\\Documents\\gaming\\discord\\discord.csproj": {}
+    "C:\\Users\\oshov\\Documents\\GitHub\\DevBlocks-DiscordBot\\discord.csproj": {}
   },
   "projects": {
-    "C:\\Users\\TimBrownCCSITSolutio\\Documents\\gaming\\discord\\discord.csproj": {
+    "C:\\Users\\oshov\\Documents\\GitHub\\DevBlocks-DiscordBot\\discord.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TimBrownCCSITSolutio\\Documents\\gaming\\discord\\discord.csproj",
+        "projectUniqueName": "C:\\Users\\oshov\\Documents\\GitHub\\DevBlocks-DiscordBot\\discord.csproj",
         "projectName": "discord",
-        "projectPath": "C:\\Users\\TimBrownCCSITSolutio\\Documents\\gaming\\discord\\discord.csproj",
-        "packagesPath": "C:\\Users\\TimBrownCCSITSolutio\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TimBrownCCSITSolutio\\Documents\\gaming\\discord\\obj\\",
+        "projectPath": "C:\\Users\\oshov\\Documents\\GitHub\\DevBlocks-DiscordBot\\discord.csproj",
+        "packagesPath": "C:\\Users\\oshov\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\oshov\\Documents\\GitHub\\DevBlocks-DiscordBot\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\TimBrownCCSITSolutio\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\oshov\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -69,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
