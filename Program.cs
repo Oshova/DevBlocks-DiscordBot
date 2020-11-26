@@ -89,36 +89,43 @@ namespace discord
                             }
                         }
                     } else if (state.VoiceChannel.Users.Count == 1 && !config.KeepIds.Any(x => x == state.VoiceChannel.Id)) {
-                        int channelNumber = channelCount - 1;
-                        string channelName = "";
-                        // var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
-                        
-                        int i = 0;
-                        while (channelName == "")
+                        var existingChannels = state.VoiceChannel.Guild.VoiceChannels.Where(x => x.Users.Count == 0);
+                        Console.WriteLine(existingChannels.Count() + " channels existing");
+                        if (existingChannels.Count() < 4)
                         {
-                            if (channelCount >= config.ChannelNames.Count + 2)
+                            int channelNumber = channelCount - 1;
+                            string channelName = "";
+                            // var channelNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("channelNames.json"));
+                            
+                            int i = 0;
+                            while (channelName == "")
+                            {
+                                if (channelCount >= config.ChannelNames.Count + 2)
+                                {
+                                    channelName = "Room " + (channelCount - 1);
+                                }
+                                Random random = new Random();
+                                int number = random.Next(0, config.ChannelNames.Count);
+                                string name = config.ChannelNames[number];
+                                if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
+                                {
+                                    channelName = name;
+                                }
+                                i++;
+                            }
+                            if (channelName == "")
                             {
                                 channelName = "Room " + (channelCount - 1);
                             }
-                            Random random = new Random();
-                            int number = random.Next(0, config.ChannelNames.Count);
-                            string name = config.ChannelNames[number];
-                            if (!state.VoiceChannel.Guild.VoiceChannels.Any(x => x.Name == name))
+                            var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
                             {
-                                channelName = name;
-                            }
-                            i++;
+                                x.CategoryId = config.CategoryId;
+                                x.Position = 1;
+                            }, null);
+                            Console.WriteLine(channelName + " created");
+                        } else {
+                            Console.WriteLine("Enough channels already");
                         }
-                        if (channelName == "")
-                        {
-                            channelName = "Room " + (channelCount - 1);
-                        }
-                        var test = await state.VoiceChannel.Guild.CreateVoiceChannelAsync(channelName, x =>
-                        {
-                            x.CategoryId = config.CategoryId;
-                            x.Position = 1;
-                        }, null);
-                        Console.WriteLine(channelName + " created");
                     }
                 }
             }
