@@ -91,7 +91,7 @@ namespace discord
                     } else if (state.VoiceChannel.Users.Count == 1 && !config.KeepIds.Any(x => x == state.VoiceChannel.Id)) {
                         var existingChannels = state.VoiceChannel.Guild.VoiceChannels.Where(x => x.Users.Count == 0);
                         Console.WriteLine(existingChannels.Count() + " channels existing");
-                        if (existingChannels.Count() < 4)
+                        if (existingChannels.Count() < (config.KeepCount + 1))
                         {
                             int channelNumber = channelCount - 1;
                             string channelName = "";
